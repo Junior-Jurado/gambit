@@ -20,6 +20,8 @@ func Manejadores(path string, method string, body string, headers map[string] st
 		return statusCode, user
 	}
 
+	fmt.Println(" > Path: "+ path)
+
 	switch path[0:4] {
 	case "user":
 		return ProcesoUsuarios(body, path, method, user, id, request)
