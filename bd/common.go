@@ -46,3 +46,35 @@ func ConnStr(claves models.SecretRDSJson) string {
 	fmt.Println(dsn)
 	return dsn
 }
+
+func UserIsAdmin(userUUID string) (bool, string) {
+	fmt.Println("Comienza UserIsAdmin")
+
+	err := DbConnect()
+
+	if err != nil {
+		return false, err.Error()
+	}
+
+	defer Db.Close()
+	
+	query := fmt.Sprintf("SELECT 1 FROM users WHERE User_UUID='%s' AND User_Status = 0", userUUID)
+	fmt.Println(query)
+
+	rows, err := Db.Query(query)
+	if err != nil {
+		return false, err.Error()
+	}
+
+	var valor string
+	rows.Next()
+	rows.Scan(&valor)
+
+	fmt.Println("UserIsAdmin > Ejecución exitosa - valor devuelto " + valor)
+	if valor == "1" {
+		return true, ""
+	}
+
+	return false, "User is not Admin"
+
+}
