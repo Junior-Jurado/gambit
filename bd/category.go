@@ -1,12 +1,16 @@
 package bd
 
-import(
-	"fmt"
+import (
 	"database/sql"
+	"fmt"
+	"strconv"
+	"strings"
+
 	// "strconv"
 	// "strings"
-	_ "github.com/go-sql-driver/mysql"
 	"github.com/Junior_Jurado/gambit/models"
+	"github.com/Junior_Jurado/gambit/tools"
+	_ "github.com/go-sql-driver/mysql"
 	// "github.com/Junior_Jurado/gambit/tools"
 )
 
@@ -34,4 +38,38 @@ func InsertCategory(c models.Category) (int64, error) {
 
 	fmt.Println("Insert Category > Ejecución Exitosa")
 	return LastInsertId, err2
+}
+
+func UpdateCategory(c models.Category) error {
+	fmt.Println("Comienza Registro de UpdateCategory")
+
+	err := DbConnect()
+	if err != nil {
+		return err
+	}
+	defer Db.Close()
+
+	query := "UPDATE category SET "
+
+	if len(c.CategName) > 0 {
+		query += "CategName = '"+ tools.EscapeString(c.CategName)+ "'"
+	}
+
+	if len(c.CategName) > 0 {
+		if !strings.HasSuffix(query, "SET") {
+			query += ", "
+		}
+		query += "Categ_Path = '" + tools.EscapeString(c.CategPath)+"' "
+	}
+
+	query += "WHERE Categ_Id = " + strconv.Itoa(c.CategID)
+
+	_, err = Db.Exec(query)
+	if err != nil {
+		fmt.Println(err.Error())
+		return err
+	}
+
+	fmt.Println("Update Category > Ejecución Exitosa")
+	return nil
 }

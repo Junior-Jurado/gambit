@@ -30,7 +30,7 @@ func Manejadores(path string, method string, body string, headers map[string] st
 	case "addr":
 		return ProcesoDirecciones(body, path, method, user, id, request)
 	case "cate":
-		return ProcesoCategorias(body, path, method, user, id, request)
+		return ProcesoCategorias(body, path, method, user, idn, request)
 	case "orde":
 		return ProcesoOrdenes(body, path, method, user, id, request)
 		
@@ -74,11 +74,15 @@ func ProcesoProductos(body string, path string, method string, user string, id i
 	return 400, "Method Invalid"
 }
 
-func ProcesoCategorias(body string, path string, method string, user string, id string, request events.APIGatewayV2HTTPRequest) (int, string) {
+func ProcesoCategorias(body string, path string, method string, user string, id int, request events.APIGatewayV2HTTPRequest) (int, string) {
 	switch method {
 	case "POST":
 		return routers.InsertCategory(body, user)
+	case "PUT":
+		return routers.UpdateCategory(body, user, id)
+
 	}
+
 	return 400, "Method Invalid"
 }
 
