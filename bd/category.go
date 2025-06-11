@@ -52,10 +52,10 @@ func UpdateCategory(c models.Category) error {
 	query := "UPDATE category SET "
 
 	if len(c.CategName) > 0 {
-		query += "CategName = '"+ tools.EscapeString(c.CategName)+ "'"
+		query += "Categ_Name = '"+ tools.EscapeString(c.CategName)+ "'"
 	}
 
-	if len(c.CategName) > 0 {
+	if len(c.CategPath) > 0 {
 		if !strings.HasSuffix(query, "SET") {
 			query += ", "
 		}
