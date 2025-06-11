@@ -64,6 +64,8 @@ func UpdateCategory(c models.Category) error {
 
 	query += "WHERE Categ_Id = " + strconv.Itoa(c.CategID)
 
+	println(query)
+
 	_, err = Db.Exec(query)
 	if err != nil {
 		fmt.Println(err.Error())
