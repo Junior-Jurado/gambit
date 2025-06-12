@@ -82,6 +82,8 @@ func ProcesoCategorias(body string, path string, method string, user string, id 
 		return routers.UpdateCategory(body, user, id)
 	case "DELETE":
 		return routers.DeleteCategory(user, id)
+	case "GET":
+		return routers.SelectCategories(body, request)
 
 	}
 
