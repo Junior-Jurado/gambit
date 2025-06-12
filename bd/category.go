@@ -112,7 +112,7 @@ func SelectCategories(CategId int, Slug string) ([]models.Category, error){
 		query += fmt.Sprintf("WHERE Categ_Id = %s", strconv.Itoa(CategId))
 	} else {
 		if len(Slug)>0 {
-			query += fmt.Sprintf("WHERE Categ_Path LIKE '%'%s''%", Slug)
+			query += fmt.Sprintf("WHERE Categ_Path LIKE '%%%s%%'", Slug)
 		}
 	}
 
