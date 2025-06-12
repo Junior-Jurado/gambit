@@ -64,8 +64,6 @@ func UpdateCategory(c models.Category) error {
 
 	query += "WHERE Categ_Id = " + strconv.Itoa(c.CategID)
 
-	println(query)
-
 	_, err = Db.Exec(query)
 	if err != nil {
 		fmt.Println(err.Error())
@@ -73,5 +71,26 @@ func UpdateCategory(c models.Category) error {
 	}
 
 	fmt.Println("Update Category > Ejecución Exitosa")
+	return nil
+}
+
+func DeleteCategory(id int) error {
+	fmt.Println("Comienza Registro de DeleteCategory")
+
+	err := DbConnect()
+	if err != nil {
+		return err
+	}
+	defer Db.Close()
+
+	query := fmt.Sprintf("DELETE FROM category WHERE Categ_Id = %s", strconv.Itoa(id))
+
+	_, err = Db.Exec(query)
+	if err != nil {
+		fmt.Println(err.Error())
+		return err
+	}
+
+	fmt.Println("Delete Category > Ejecución Exitosa")
 	return nil
 }
