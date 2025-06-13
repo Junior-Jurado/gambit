@@ -76,12 +76,12 @@ func UpdateProduct(p models.Product) error {
 	defer Db.Close()
 
 	query := "UPDATE products SET"
-	query = tools.ArmoSentencia(query, "Prod_Title", "S", 0, 0, p.ProdTitle)
-	query = tools.ArmoSentencia(query, "Prod_Description", "S", 0, 0, p.ProdDescription)
-	query = tools.ArmoSentencia(query, "Prod_Price", "F", 0, p.ProdPrice, "")
-	query = tools.ArmoSentencia(query, "Prod_CategoryId", "N", p.ProdCategId, 0, "")
-	query = tools.ArmoSentencia(query, "Prod_Stock", "N", p.ProdStock, 0, "")
-	query = tools.ArmoSentencia(query, "Prod_Path", "S", 0, 0, p.ProdPath)
+	query += tools.ArmoSentencia(query, "Prod_Title", "S", 0, 0, p.ProdTitle)
+	query += tools.ArmoSentencia(query, "Prod_Description", "S", 0, 0, p.ProdDescription)
+	query += tools.ArmoSentencia(query, "Prod_Price", "F", 0, p.ProdPrice, "")
+	query += tools.ArmoSentencia(query, "Prod_CategoryId", "N", p.ProdCategId, 0, "")
+	query += tools.ArmoSentencia(query, "Prod_Stock", "N", p.ProdStock, 0, "")
+	query += tools.ArmoSentencia(query, "Prod_Path", "S", 0, 0, p.ProdPath)
 
 	query += " WHERE Prod_Id = " + strconv.Itoa(p.ProdId)
 
