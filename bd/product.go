@@ -44,7 +44,7 @@ func InsertProduct(p models.Product) (int64, error) {
 		values = append(values, "'"+tools.EscapeString(p.ProdCategPath)+"'")
 	}
 
-	query := fmt.Sprintf("INSERT INTO product (%s) VALUES (%s)",
+	query := fmt.Sprintf("INSERT INTO products (%s) VALUES (%s)",
 		strings.Join(columns, ", "),
 		strings.Join(values, ", "),
 	)
