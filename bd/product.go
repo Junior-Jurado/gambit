@@ -75,7 +75,7 @@ func UpdateProduct(p models.Product) error {
 	}
 	defer Db.Close()
 
-	query := "UPDATE products SET"
+	query := "UPDATE products SET "
 	query = tools.ArmoSentencia(query, "Prod_Title", "S", 0, 0, p.ProdTitle)
 	query = tools.ArmoSentencia(query, "Prod_Description", "S", 0, 0, p.ProdDescription)
 	query = tools.ArmoSentencia(query, "Prod_Price", "F", 0, p.ProdPrice, "")
