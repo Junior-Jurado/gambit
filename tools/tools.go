@@ -27,7 +27,7 @@ func ArmoSentencia(s string, fieldName string, typeField string, ValueN int, Val
 		return s
 	}
 
-	if !strings.HasPrefix(s, "SET ") {
+	if !strings.HasSuffix(s, "SET ") {
 		s += ", "
 	}
 
