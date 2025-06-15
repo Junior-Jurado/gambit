@@ -1,13 +1,13 @@
 package bd
 
-import(
+import (
 	"database/sql"
 	"fmt"
 	"os"
-	_ "github.com/go-sql-driver/mysql"
-	"github.com/Junior_Jurado/gambit/secretm"
-	"github.com/Junior_Jurado/gambit/models"
 
+	"github.com/Junior_Jurado/gambit/models"
+	"github.com/Junior_Jurado/gambit/secretm"
+	_ "github.com/go-sql-driver/mysql"
 )
 
 var SecretModel models.SecretRDSJson
@@ -77,4 +77,31 @@ func UserIsAdmin(userUUID string) (bool, string) {
 
 	return false, "User is not Admin"
 
+}
+
+func UserExists(User_UUID string) (error, bool) {
+	fmt.Println("Comienza UserExists")
+
+	err := DbConnect()
+	if err != nil {
+		return err, false
+	}
+
+	query := "SELECT 1 FROM users WHERE User_UUID = '" + User_UUID + "'"
+	
+	rows, err2 := Db.Query(query)
+	if err2 != nil {
+		return err2, false
+	}
+
+	var valor string
+	rows.Next()
+	rows.Scan(&valor)
+
+	fmt.Println("UserExist > Ejecución Exitosa - valor devuelto " + valor)
+
+	if valor == "1" {
+		return nil, true
+	}
+	return nil, false
 }
