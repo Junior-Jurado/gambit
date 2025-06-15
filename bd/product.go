@@ -212,6 +212,7 @@ func SelectProduct(p models.Product, choice string, page int, pageSize int, orde
 
 	fmt.Println("Query Products > " + queryP)
 	fmt.Println("Query Quantity Products >" + queryQ)
+	fmt.Println(p)
 
 	rows, err := Db.Query(queryP)
 	if err != nil {
@@ -219,6 +220,8 @@ func SelectProduct(p models.Product, choice string, page int, pageSize int, orde
 		return Resp, err
 	}
 	defer rows.Close()
+
+	fmt.Println(rows.Next())
 
 	for rows.Next() {
 		var p models.Product
