@@ -233,9 +233,11 @@ func SelectProduct(p models.Product, choice string, page int, pageSize int, orde
 		var ProdCategoryId sql.NullInt32
 		var ProdStock sql.NullInt32
 
+		
+
 		err := rows.Scan(&ProdId, &ProdTitle, &ProdDescription, &ProdCreatedAt, &ProdUpdated, &ProdPrice, &ProdPath, &ProdCategoryId, &ProdStock)
 		if err != nil {
-			fmt.Println("Acá entrooo " + err.Error())
+			fmt.Println("Acá entrooo " + err.Error() + " > " + ProdCreatedAt.Time.String())
 			return Resp, err
 		}
 
