@@ -133,7 +133,7 @@ func SelectProduct(p models.Product, choice string, page int, pageSize int, orde
 	var queryQ string
 	var where, limit string
 
-	queryP = "SELECT Prod_Id, Prod_Title, Prod_Description, Prod_CreatedAt, Prod_Updted, Prod_Price, Prod_Path, Prod_CategoryId, Prod_Stock FROM products "
+	queryP = "SELECT Prod_Id, Prod_Title, Prod_Description, Prod_CreatedAt, Prod_Updated, Prod_Price, Prod_Path, Prod_CategoryId, Prod_Stock FROM products "
 	queryQ = "SELECT COUNT(*) as registros FROM products "
 
 	switch choice {
