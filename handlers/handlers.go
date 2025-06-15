@@ -26,7 +26,7 @@ func Manejadores(path string, method string, body string, headers map[string] st
 	case "prod":
 		return ProcesoProductos(body, path, method, user, idn, request)
 	case "stoc":
-		return ProcesoStock(body, path, method, user, id, request)
+		return ProcesoStock(body, path, method, user, idn, request)
 	case "addr":
 		return ProcesoDirecciones(body, path, method, user, id, request)
 	case "cate":
@@ -35,8 +35,6 @@ func Manejadores(path string, method string, body string, headers map[string] st
 		return ProcesoOrdenes(body, path, method, user, id, request)
 		
 	}
-
-
 
 	return 400, "Method Invalid"
 }
@@ -100,8 +98,8 @@ func ProcesoCategorias(body string, path string, method string, user string, id 
 	return 400, "Method Invalid"
 }
 
-func ProcesoStock(body string, path string, method string, user string, id string, request events.APIGatewayV2HTTPRequest) (int, string) {
-	return 400, "Method Invalid"
+func ProcesoStock(body string, path string, method string, user string, id int, request events.APIGatewayV2HTTPRequest) (int, string) {
+	return routers.UpdateStock(body, user, id)
 }
 
 func ProcesoDirecciones(body string, path string, method string, user string, id string, request events.APIGatewayV2HTTPRequest) (int, string) {

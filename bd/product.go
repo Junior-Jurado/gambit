@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"errors"
 
 	"github.com/Junior_Jurado/gambit/models"
 	"github.com/Junior_Jurado/gambit/tools"
@@ -282,4 +283,29 @@ func SelectProduct(p models.Product, choice string, page int, pageSize int, orde
 
 	fmt.Println("Select Product > Ejecución Exitosa")
 	return Resp, nil
+}
+
+func UpdateStock(p models.Product) error {
+	fmt.Println("Comienza Update Stock")
+
+	if p.ProdStock == 0 {
+		return errors.New("[ERROR] Debe enviar el stock a modificar")
+	}
+
+	err := DbConnect()
+	if err != nil {
+		return err
+	}
+	defer Db.Close()
+
+	query := "UPDATE products SET Prod_Stock = Prod_Stock + " + strconv.Itoa(p.ProdStock) + " WHERE Prod_Id = " + strconv.Itoa(p.ProdId)
+	
+	_, err = Db.Exec(query)
+	if err != nil {
+		fmt.Println(err.Error())
+		return err
+	}
+
+	fmt.Println("Update Stock > Ejecución Exitosa")
+	return nil
 }
