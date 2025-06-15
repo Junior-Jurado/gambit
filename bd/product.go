@@ -212,7 +212,6 @@ func SelectProduct(p models.Product, choice string, page int, pageSize int, orde
 
 	fmt.Println("Query Products > " + queryP)
 	fmt.Println("Query Quantity Products >" + queryQ)
-	fmt.Println(p)
 
 	rows, err := Db.Query(queryP)
 	if err != nil {
@@ -221,7 +220,6 @@ func SelectProduct(p models.Product, choice string, page int, pageSize int, orde
 	}
 	defer rows.Close()
 
-	fmt.Println(rows.Next())
 
 	for rows.Next() {
 		var p models.Product
@@ -237,6 +235,7 @@ func SelectProduct(p models.Product, choice string, page int, pageSize int, orde
 
 		err := rows.Scan(&ProdId, &ProdTitle, &ProdDescription, &ProdCreatedAt, &ProdUpdated, &ProdPrice, &ProdPath, &ProdCategoryId, &ProdStock)
 		if err != nil {
+			fmt.Println("Acá entrooo " + err.Error())
 			return Resp, err
 		}
 
