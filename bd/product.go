@@ -140,7 +140,7 @@ func SelectProduct(p models.Product, choice string, page int, pageSize int, orde
 	case "P":
 		where = "WHERE Prod_Id = " + strconv.Itoa(p.ProdId)
 	case "S":
-		where = "WHERE UCASE(CONCAT(Prod_Title, Prod_Description)) = LIKE '%" + strings.ToUpper(p.ProdSearch) + "%' "
+		where = "WHERE UCASE(CONCAT(Prod_Title, Prod_Description)) LIKE '%" + strings.ToUpper(p.ProdSearch) + "%' "
 	case "C":
 		where = "WHERE Prod_CategoryId = " + strconv.Itoa(p.ProdCategId)
 	case "U":
@@ -153,30 +153,34 @@ func SelectProduct(p models.Product, choice string, page int, pageSize int, orde
 
 	queryQ += where
 
-	var rows *sql.Rows
-	rows, err = Db.Query(queryQ)
-	defer rows.Close()
-
+	// ⚠️ Ejecutar queryQ y validar error antes de usar rows
+	rowsCount, err := Db.Query(queryQ)
 	if err != nil {
-		fmt.Println(err.Error())
+		fmt.Println("Error en queryQ:", err.Error())
 		return Resp, err
 	}
+	defer rowsCount.Close()
 
-	rows.Next()
 	var regis sql.NullInt32
-	err = rows.Scan(&regis)
-
+	if rowsCount.Next() {
+		err = rowsCount.Scan(&regis)
+		if err != nil {
+			fmt.Println("Error al escanear registros:", err.Error())
+			return Resp, err
+		}
+	} else {
+		fmt.Println("No se encontraron registros")
+		return Resp, nil
+	}
 	registros := int(regis.Int32)
-	
+
 	if page > 0 {
 		if registros > pageSize {
 			limit = "LIMIT " + strconv.Itoa(pageSize)
 			if page > 1 {
 				offset := pageSize * (page - 1)
-				limit = " OFFSET " + strconv.Itoa(offset)
+				limit += " OFFSET " + strconv.Itoa(offset)
 			}
-		} else {
-			limit = ""
 		}
 	}
 
@@ -197,22 +201,25 @@ func SelectProduct(p models.Product, choice string, page int, pageSize int, orde
 			orderBy = " ORDER BY Prod_Stock "
 		case "C":
 			orderBy = " ORDER BY Prod_CategoryId "
-
 		}
-	
 	}
 
 	if orderType == "D" {
 		orderBy += " DESC "
 	}
 
-	queryP += where + orderBy + limit
+	queryP += where + orderBy + " " + limit
 
 	fmt.Println("Query Products > " + queryP)
 	fmt.Println("Query Quantity Products >" + queryQ)
 
-	rows, err = Db.Query(queryP)
-	
+	rows, err := Db.Query(queryP)
+	if err != nil {
+		fmt.Println("Error en queryP:", err.Error())
+		return Resp, err
+	}
+	defer rows.Close()
+
 	for rows.Next() {
 		var p models.Product
 		var ProdId sql.NullInt32
@@ -224,9 +231,8 @@ func SelectProduct(p models.Product, choice string, page int, pageSize int, orde
 		var ProdPath sql.NullString
 		var ProdCategoryId sql.NullInt32
 		var ProdStock sql.NullInt32
-		
-		err := rows.Scan(&ProdId, &ProdTitle, &ProdDescription, &ProdCreatedAt, &ProdUpdated, &ProdPrice, &ProdPath, &ProdCategoryId, &ProdStock)
 
+		err := rows.Scan(&ProdId, &ProdTitle, &ProdDescription, &ProdCreatedAt, &ProdUpdated, &ProdPrice, &ProdPath, &ProdCategoryId, &ProdStock)
 		if err != nil {
 			return Resp, err
 		}
@@ -249,5 +255,4 @@ func SelectProduct(p models.Product, choice string, page int, pageSize int, orde
 
 	fmt.Println("Select Product > Ejecución Exitosa")
 	return Resp, nil
-	
 }
