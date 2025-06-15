@@ -65,7 +65,6 @@ func validoAuthorization(path string, method string, headers map[string]string) 
 }
 
 func ProcesoUsuarios(body string, path string, method string, user string, id string, request events.APIGatewayV2HTTPRequest) (int, string) {
-	fmt.Println(" Path > " + path)
 	if path == "/user/me"{
 		switch method {
 		case "PUT":
