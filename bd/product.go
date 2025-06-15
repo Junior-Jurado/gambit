@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/Junior_Jurado/gambit/models"
 	"github.com/Junior_Jurado/gambit/tools"
@@ -226,26 +227,48 @@ func SelectProduct(p models.Product, choice string, page int, pageSize int, orde
 		var ProdId sql.NullInt32
 		var ProdTitle sql.NullString
 		var ProdDescription sql.NullString
-		var ProdCreatedAt sql.NullTime
-		var ProdUpdated sql.NullTime
+		var ProdCreatedAtStr sql.NullString  
+		var ProdUpdatedStr sql.NullString    
 		var ProdPrice sql.NullFloat64
 		var ProdPath sql.NullString
 		var ProdCategoryId sql.NullInt32
 		var ProdStock sql.NullInt32
 
-		
+		err := rows.Scan(
+			&ProdId, &ProdTitle, &ProdDescription,
+			&ProdCreatedAtStr, &ProdUpdatedStr,
+			&ProdPrice, &ProdPath, &ProdCategoryId, &ProdStock,
+		)
 
-		err := rows.Scan(&ProdId, &ProdTitle, &ProdDescription, &ProdCreatedAt, &ProdUpdated, &ProdPrice, &ProdPath, &ProdCategoryId, &ProdStock)
 		if err != nil {
-			fmt.Println("Acá entrooo " + err.Error() + " > " + ProdCreatedAt.Time.String())
+			fmt.Println("Scan error:", err)
 			return Resp, err
 		}
 
+		layout := "2006-01-02 15:04:05" // formato estándar MySQL DATETIME
+
+		var createdAtStr string
+		if ProdCreatedAtStr.Valid {
+			createdAtStr = ProdCreatedAtStr.String
+		} else {
+			createdAtStr = ""
+		}
+
+		createdAtParsed, err := time.Parse(layout, createdAtStr)
+		if err != nil {
+			fmt.Println("Error al parsear CreatedAt:", err, "valor:", createdAtStr)
+			createdAtParsed = time.Time{} // asignar vacío si falla
+		}
+
+		var updatedAtParsed time.Time
+		if ProdUpdatedStr.Valid {
+			updatedAtParsed, _ = time.Parse(layout, ProdUpdatedStr.String)
+		}
 		p.ProdId = int(ProdId.Int32)
 		p.ProdTitle = ProdTitle.String
 		p.ProdDescription = ProdDescription.String
-		p.ProdCreatedAt = ProdCreatedAt.Time.String()
-		p.ProdUpdated = ProdUpdated.Time.String()
+		p.ProdCreatedAt = createdAtParsed.Format("2006-01-02 15:04:05")
+    	p.ProdUpdated = updatedAtParsed.Format("2006-01-02 15:04:05")
 		p.ProdPrice = ProdPrice.Float64
 		p.ProdPath = ProdPath.String
 		p.ProdCategId = int(ProdCategoryId.Int32)
