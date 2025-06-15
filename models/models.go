@@ -43,7 +43,7 @@ type ProductResp struct {
 type User struct {
 	UserUUID		string	`json:"userUUID"`
 	UserEmail 		string  `json:"userEmail"`
-	UserFirstName	string  `json:"userFirtsName"`
+	UserFirstName	string  `json:"userFirstName"`
 	UserLastName 	string	`json:"userLastName"`
 	UserStatus	 	int		`json:"userStatus"`
 	UserDateAdd 	string	`json:"userDateAdd"`
