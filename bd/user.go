@@ -33,7 +33,7 @@ func UpdateUser(UField models.User, User string) error {
 		query += coma + " User_LastName = '" + UField.UserLastName + "'"
 	}
 
-	query += ", User_DataUpg = '" + tools.FechaMySQL() + "' WHERE User_UUID = '" + User + "'"
+	query += ", User_DateUpg = '" + tools.FechaMySQL() + "' WHERE User_UUID = '" + User + "'"
 
 	_, err = Db.Exec(query)
 	if err != nil {
