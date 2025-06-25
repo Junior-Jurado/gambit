@@ -72,6 +72,11 @@ func ProcesoUsuarios(body string, path string, method string, user string, id st
 		case "GET":
 			return routers.SelectUser(body, user)
 		}
+	} else if path == "/users"{
+		switch method {
+		case "GET":
+			return routers.SelectUsers(body, user, request)
+		}
 	}
 
 	
