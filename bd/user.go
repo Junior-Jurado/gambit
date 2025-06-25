@@ -2,6 +2,7 @@ package bd
 
 import (
 	// "database/sql"
+	"database/sql"
 	"fmt"
 	// "strconv"
 	// "strings"
@@ -44,4 +45,40 @@ func UpdateUser(UField models.User, User string) error {
 	fmt.Println("Update User > Ejecución Exitosa")
 	return nil
 
+}
+
+func SelectUser(UserId string)(models.User, error) {
+	fmt.Println("Comienza Select User")
+	User := models.User{}
+
+	err := DbConnect()
+	if err != nil {
+		return User, err
+	}
+	defer Db.Close()
+
+	query := "SELECT * FROM users WHERE User_UUID = '"+ UserId + "'"
+
+	var rows *sql.Rows
+	rows, err = Db.Query(query)
+	if err != nil {
+		fmt.Println(err.Error())
+		return User, err
+	}
+	defer rows.Close()
+	
+	rows.Next()
+
+	var firstName sql.NullString
+	var lastName sql.NullString
+	var dateUpg sql.NullTime
+
+	rows.Scan(&User.UserUUID, &User.UserEmail, &firstName, &lastName, &User.UserStatus, &User.UserDateAdd, &dateUpg)
+
+	User.UserFirstName = firstName.String
+	User.UserLastName = lastName.String
+	User.UserDateUpd = dateUpg.Time.String()
+
+	fmt.Println("Select User > Ejecución Exitosa")
+	return User, nil
 }
