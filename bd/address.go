@@ -15,7 +15,7 @@ func InsertAddress(addr models.Address, User string) error {
 	}
 	defer Db.Close()
 
-	query := "INSERT INTO addresses (Add_UserId, Add_Address, Add_City, Add_State, Add_Postal_Code, Add_Phone, Add_Title, Add_Name)"
+	query := "INSERT INTO addresses (Add_UserId, Add_Address, Add_City, Add_State, Add_PostalCode, Add_Phone, Add_Title, Add_Name)"
 	query += " VALUES ('"+ User + "', '" + addr.AddAddress + "', '" + addr.AddCity + "', '"+ addr.AddState + "', '" + addr.AddPostalCode + "', '" + addr.AddPhone + "', '" + addr.AddTitle + "', '" + addr.AddName + "')"
 
 	fmt.Println(query)
