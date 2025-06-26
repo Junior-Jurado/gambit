@@ -57,7 +57,7 @@ func AddressExist(User string, id int) (error, bool) {
 	if valor == "1" {
 		return nil, true
 	}
-	return nil, false
+	return nil, true
 
 }
 
