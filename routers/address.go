@@ -82,10 +82,23 @@ func DeleteAddress(User string, id int) (int, string) {
 		return 400, "No se encuentra un registro de ID de Usuario asociado a esa ID de Address"
 	}
 
-
 	err = bd.DeleteAddress(id)
 	if err != nil {
 		return 400, "Ocurrió un error al tratar borrar una dirección del Usuario " + User + " > " + err.Error()
 	}
 	return 200, "Delete Address OK"
+}
+
+func SelectAddress(User string) (int, string) {
+	addr, err := bd.SelectAddress(User)
+	if err != nil {
+		return 400, "Ocurrió un error al intentar obtener la lista de direcciones del usuario " + User + " > " +  err.Error()
+	}
+
+	respJson, err := json.Marshal(addr)
+	if err != nil {
+		return 500, "Error al formatear los datos de las direcciones como JSON"
+	}
+
+	return 200, string(respJson)
 }

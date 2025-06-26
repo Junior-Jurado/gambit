@@ -125,6 +125,8 @@ func ProcesoDirecciones(body string, path string, method string, user string, id
 		return routers.UpdateAddress(body, user, id)
 	case "DELETE": 
 		return routers.DeleteAddress(user, id)
+	case "GET":
+		return routers.SelectAddress(user)
 	}
 	return 400, "Method Invalid"
 }
