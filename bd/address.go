@@ -50,14 +50,14 @@ func AddressExist(User string, id int) (error, bool) {
 	}
 	var valor string
 	rows.Next()
-	rows.Scan(valor)
+	rows.Scan(&valor)
 
 	fmt.Println("AddressExist > Ejecución Exitosa - valor devuelto " + valor)
 
 	if valor == "1" {
 		return nil, true
 	}
-	return nil, true
+	return nil, false
 
 }
 
