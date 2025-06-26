@@ -145,7 +145,7 @@ func SelectAddress(User string) ([]models.Address, error) {
 		return Addr, err
 	}
 	defer Db.Close()
-	query := "SELECT Add_Id, Add_Address, Add_City, Add_State, Add_PostalCode, Add_Phone, Add_Title, Add_Name FROM addresses WHERE Add_UserID = " + User
+	query := "SELECT Add_Id, Add_Address, Add_City, Add_State, Add_PostalCode, Add_Phone, Add_Title, Add_Name FROM addresses WHERE Add_UserID = '" + User + "'"
 
 	var rows *sql.Rows
 	rows, err = Db.Query(query)
