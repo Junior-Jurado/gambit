@@ -71,3 +71,21 @@ func UpdateAddress(body string, User string, id int) (int, string) {
 
 	return 200, "Update Address OK"
 }
+
+func DeleteAddress(User string, id int) (int, string) {
+
+	err, encontrado := bd.AddressExist(User, id)
+	if !encontrado {
+		if err != nil {
+			return 400, "Error al intentar buscar el Address para el usuario " + User + " > " + err.Error()
+		}
+		return 400, "No se encuentra un registro de ID de Usuario asociado a esa ID de Address"
+	}
+
+
+	err = bd.DeleteAddress(id)
+	if err != nil {
+		return 400, "Ocurrió un error al tratar borrar una dirección del Usuario " + User + " > " + err.Error()
+	}
+	return 200, "Delete Address OK"
+}
