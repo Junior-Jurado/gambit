@@ -122,14 +122,14 @@ func DeleteAddress(id int) error {
 	}
 	defer Db.Close()
 
-	query := "DELETE FROM addresses WHERE Add_addId = " + strconv.Itoa(id)
+	query := "DELETE FROM addresses WHERE Add_Id = " + strconv.Itoa(id)
 
 	_, err = Db.Exec(query)
 	if err != nil {
 		fmt.Println(err.Error())
 		return err
 	}
-	
+
 	fmt.Println("Delete Address > Ejecución Exitosa")
 	return nil
 }
