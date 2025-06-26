@@ -28,7 +28,7 @@ func Manejadores(path string, method string, body string, headers map[string] st
 	case "stoc":
 		return ProcesoStock(body, path, method, user, idn, request)
 	case "addr":
-		return ProcesoDirecciones(body, path, method, user, id, request)
+		return ProcesoDirecciones(body, path, method, user, idn, request)
 	case "cate":
 		return ProcesoCategorias(body, path, method, user, idn, request)
 	case "orde":
@@ -117,10 +117,12 @@ func ProcesoStock(body string, path string, method string, user string, id int, 
 	return routers.UpdateStock(body, user, id)
 }
 
-func ProcesoDirecciones(body string, path string, method string, user string, id string, request events.APIGatewayV2HTTPRequest) (int, string) {
+func ProcesoDirecciones(body string, path string, method string, user string, id int, request events.APIGatewayV2HTTPRequest) (int, string) {
 	switch method {
 	case "POST":
 		return routers.InsertAddress(body, user)
+	case "PUT":
+		return routers.UpdateAddress(body, user, id)
 	}
 	return 400, "Method Invalid"
 }
