@@ -3,11 +3,9 @@ package handlers
 import (
 	"fmt"
 	"strconv"
-
 	"github.com/Junior_Jurado/gambit/auth"
 	"github.com/Junior_Jurado/gambit/routers"
 	"github.com/aws/aws-lambda-go/events"
-	"golang.org/x/text/cases"
 )
 
 func Manejadores(path string, method string, body string, headers map[string] string, request events.APIGatewayV2HTTPRequest) (int, string) {
