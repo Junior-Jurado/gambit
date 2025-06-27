@@ -3,9 +3,11 @@ package handlers
 import (
 	"fmt"
 	"strconv"
-	"github.com/aws/aws-lambda-go/events"
+
 	"github.com/Junior_Jurado/gambit/auth"
 	"github.com/Junior_Jurado/gambit/routers"
+	"github.com/aws/aws-lambda-go/events"
+	"golang.org/x/text/cases"
 )
 
 func Manejadores(path string, method string, body string, headers map[string] string, request events.APIGatewayV2HTTPRequest) (int, string) {
@@ -132,5 +134,10 @@ func ProcesoDirecciones(body string, path string, method string, user string, id
 }
 
 func ProcesoOrdenes(body string, path string, method string, user string, id string, request events.APIGatewayV2HTTPRequest) (int, string) {
+	switch method {
+	case "POST":
+		return routers.InsertOrder(body, user)
+	}
+	
 	return 400, "Method Invalid"
 }
