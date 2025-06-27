@@ -2,11 +2,11 @@ package routers
 
 import (
 	"encoding/json"
-	"fmt"
 	"strconv"
 
 	"github.com/Junior_Jurado/gambit/bd"
 	"github.com/Junior_Jurado/gambit/models"
+	"github.com/aws/aws-lambda-go/events"
 )
 
 
@@ -33,8 +33,6 @@ func InsertOrder(body string, User string) (int, string) {
 }
 
 func ValidOrder(o models.Orders) (bool, string) {
-	fmt.Println(o)
-	
 	if o.Order_Total == 0 {
 		return false, "Debe indicar el total de la orden"
 	}
@@ -57,4 +55,36 @@ func ValidOrder(o models.Orders) (bool, string) {
 	}
 
 	return true, ""
+}
+
+func SelectOrders(User string, request events.APIGatewayV2HTTPRequest) (int, string) {
+	// var err error
+	var fechaDesde, fechaHasta string
+	var orderId int
+	var page int
+
+	if len(request.QueryStringParameters["fechaDesde"]) > 0 {
+		fechaDesde = request.QueryStringParameters["fechaDesde"]
+	}
+	if len(request.QueryStringParameters["fechaHasta"]) > 0 {
+		fechaHasta = request.QueryStringParameters["fechaHasta"]
+	}
+	if len(request.QueryStringParameters["page"]) > 0 {
+		page, _ = strconv.Atoi(request.QueryStringParameters["page"])
+	}
+	if len(request.QueryStringParameters["orderId"]) > 0 {
+		orderId, _ = strconv.Atoi(request.QueryStringParameters["orderId"])
+	}
+
+	result, err2 := bd.SelectOrders(User, fechaDesde, fechaHasta, page, orderId)
+	if err2 != nil {
+		return 400, "Ocurrió un error al intentar capturar los registros de órdenes del " + fechaDesde + " al " + fechaHasta + " > " + err2.Error()
+	}
+
+	Orders, err3 := json.Marshal(result)
+	if err3 != nil {
+		return 400, "Ocurrió un error al intentar convertir en JSON el registro de Orden"
+	}
+
+	return 200, string(Orders)
 }

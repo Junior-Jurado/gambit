@@ -7,6 +7,7 @@ import (
 	"github.com/Junior_Jurado/gambit/auth"
 	"github.com/Junior_Jurado/gambit/routers"
 	"github.com/aws/aws-lambda-go/events"
+	"golang.org/x/text/cases"
 )
 
 func Manejadores(path string, method string, body string, headers map[string] string, request events.APIGatewayV2HTTPRequest) (int, string) {
@@ -136,6 +137,8 @@ func ProcesoOrdenes(body string, path string, method string, user string, id str
 	switch method {
 	case "POST":
 		return routers.InsertOrder(body, user)
+	case "GET":
+		return routers.SelectOrders(user, request)
 	}
 	
 	return 400, "Method Invalid"
