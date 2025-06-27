@@ -54,7 +54,7 @@ func SelectOrders(User string, fechaDesde string, fechaHasta string, page int, o
 	fmt.Println("Comienza SelectOrders")
 	var Orders []models.Orders
 
-	query := "SELECT Order_Id, Order_UserUUID, OrderAddId, Order_Date, Order_Total FROM orders "
+	query := "SELECT Order_Id, Order_UserUUID, Order_AddId, Order_Date, Order_Total FROM orders "
 
 	if orderId > 0 {
 		query += " WHERE Order_Id = " + strconv.Itoa(orderId)
@@ -113,6 +113,7 @@ func SelectOrders(User string, fechaDesde string, fechaHasta string, page int, o
 		if err != nil {
 			return Orders, err
 		}
+		
 		Order.Order_AddId = int(OrderAddId.Int32)
 
 		var rowsD *sql.Rows
