@@ -76,9 +76,9 @@ type Orders struct {
 }
 
 type OrdersDetails struct {
-	OD_Id 		int 	`json:"odID`
-	OD_OrderId 	int 	`json:"odOrderId`
-	OD_ProdId	int 	`json:"odProdId`
+	OD_Id 		int 	`json:"odID"`
+	OD_OrderId 	int 	`json:"odOrderId"`
+	OD_ProdId	int 	`json:"odProdId"`
 	OD_Quantity int 	`json:"odQuantity"`
 	OD_Price 	float64 `json:"odPrice"`
 }
