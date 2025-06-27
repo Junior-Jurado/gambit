@@ -2,6 +2,7 @@ package routers
 
 import (
 	"encoding/json"
+	"fmt"
 	"strconv"
 
 	"github.com/Junior_Jurado/gambit/bd"
@@ -32,6 +33,8 @@ func InsertOrder(body string, User string) (int, string) {
 }
 
 func ValidOrder(o models.Orders) (bool, string) {
+	fmt.Println(o)
+	
 	if o.Order_Total == 0 {
 		return false, "Debe indicar el total de la orden"
 	}
