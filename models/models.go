@@ -72,7 +72,7 @@ type Orders struct {
 	Order_AddId			int 	`json:"orderAddId"`
 	Order_Date			string	`json:"orderDate"`
 	Order_Total			float64	`json:"orderTotal"`
-	OrdersDetails 		[]OrdersDetails `json:"orderDetails`
+	OrdersDetails 		[]OrdersDetails `json:"orderDetails"`
 }
 
 type OrdersDetails struct {
